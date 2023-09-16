@@ -42,7 +42,9 @@ pipeline {
             }
             post {
                 success{
-                    curl -s -X POST -H 'Content-Type: application/json' -d '\{\"chat_id\": \"1001771539978\", \"text\": \"Grant собрал приложение.\" \}' https://api.telegram.org/bot5933756043:AAE8JLL5KIzgrNBeTP5e-1bkbJy4YRoeGjs/sendMessage
+                    sh """
+                    curl -X POST -H 'Content-Type: application/json' -d '\{\"chat_id\": \"1001771539978\", \"text\": \"Grant собрал приложение.\" \}' https://api.telegram.org/bot5933756043:AAE8JLL5KIzgrNBeTP5e-1bkbJy4YRoeGjs/sendMessage
+                    """
                 }
             }
         }
