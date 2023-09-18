@@ -15,7 +15,7 @@
     <description>Backend for sausage-store</description>
     <properties>
         <java.version>16</java.version>
-        <sonar.projectKey>test_manual</sonar.projectKey>
+        <sonar.projectKey>22_GrantRusov_BACKEND</sonar.projectKey>
         <sonar.qualitygate.wait>true</sonar.qualitygate.wait>
     </properties>
     <dependencies>
