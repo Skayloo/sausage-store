@@ -1,6 +1,6 @@
 include:
-  - '/backend/.gitlab-ci.yml'
-  - '/frontend/.gitlab-ci.yml'
+  - 'backend/.gitlab-ci.yml'
+  - 'frontend/.gitlab-ci.yml'
 stages:
   - build
   - test
