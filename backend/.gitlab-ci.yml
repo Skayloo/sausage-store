@@ -10,22 +10,6 @@ cache:
   paths:
     - ${CI_PROJECT_DIR}/.m2/repository
 
-backend-deploy:
-  stage: deploy
-  before_script:
-    #устанавливаем ssh-agent для удобства аутентификации по ssh
-    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    #сохраняем сгенеренный ранее приватный ключ для раннера
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 600 ~/.ssh
-    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-  script:
-    - scp ./backend/sausage-store-backend.service ${DEV_USER}@${DEV_HOST}:/home/${DEV_USER}/sausage-store-backend.service
-    - ssh ${DEV_USER}@${DEV_HOST} "export "CURRENT_VERSION=${VERSION}"; export "VERSION=${VERSION}"; export "DEV_HOST=${DEV_HOST}";export "NEXUS_REPO_URL_BACKEND=${NEXUS_REPO_URL_BACKEND}"; export "NEXUS_REPO_USER=${NEXUS_REPO_USER}"; export "NEXUS_REPO_PASS=${NEXUS_REPO_PASS}";setsid /bin/bash -s " < ./backend/deploy.sh
-
 backend-build:
   stage: build
   script:
@@ -38,18 +22,6 @@ backend-build:
     paths:
       - backend/target/sausage-store-${VERSION}.jar
       - ${CI_PROJECT_DIR}/.m2/
-  rules:
-    - changes:
-      - backend/**/*
-
-backend-upload-release:
-  stage: release 
-  script:
-    - cd backend
-    - >
-     mvn deploy -DskipTests
-     -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/repository
-     -s settings.xml -Dversion.application=${VERSION}
   rules:
     - changes:
       - backend/**/*
@@ -87,3 +59,31 @@ telegram-notification-backend:
      curl -X POST -H 'Content-Type: application/json' -d '{"chat_id": "-1001771539978", "text": "Backend project build for std-022-039. Checkout link below ", "parse_mode": "markdown", "reply_markup": {"inline_keyboard": [[{"text": "@GrantRusov", "url": "'"$CI_PROJECT_URL/-/jobs/artifacts/$CI_COMMIT_SHA/download?job=build-backend-code-job"'"}]]}}' https://api.telegram.org/bot5933756043:AAE8JLL5KIzgrNBeTP5e-1bkbJy4YRoeGjs/sendMessage
   needs:
     - backend-build
+
+backend-upload-release:
+  stage: release 
+  script:
+    - cd backend
+    - >
+     mvn deploy -DskipTests
+     -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/repository
+     -s settings.xml -Dversion.application=${VERSION}
+  rules:
+    - changes:
+      - backend/**/*
+
+backend-deploy:
+  stage: deploy
+  before_script:
+    #устанавливаем ssh-agent для удобства аутентификации по ssh
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    #сохраняем сгенеренный ранее приватный ключ для раннера
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 600 ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - scp ./backend/sausage-store-backend.service ${DEV_USER}@${DEV_HOST}:/home/${DEV_USER}/sausage-store-backend.service
+    - ssh ${DEV_USER}@${DEV_HOST} "export "CURRENT_VERSION=${VERSION}"; export "VERSION=${VERSION}"; export "DEV_HOST=${DEV_HOST}";export "NEXUS_REPO_URL_BACKEND=${NEXUS_REPO_URL_BACKEND}"; export "NEXUS_REPO_USER=${NEXUS_REPO_USER}"; export "NEXUS_REPO_PASS=${NEXUS_REPO_PASS}";setsid /bin/bash -s " < ./backend/deploy.sh
