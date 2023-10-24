@@ -81,7 +81,6 @@ backend-upload-release:
      -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/repository
      -s settings.xml -Dversion.application=${VERSION}
 
-
 backend-deploy:
   stage: deploy
   before_script:
