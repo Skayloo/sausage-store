@@ -37,8 +37,9 @@ build-backend-code-job:
       - backend/target/sausage-store-${VERSION}.jar
       - ${CI_PROJECT_DIR}/.m2/
   rules:
-     - changes:
-          - backend/**/*
+    changes:
+      - backend/**/*
+
 upload-backend-release:
   stage: release
   script:
@@ -48,13 +49,13 @@ upload-backend-release:
      -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/repository
      -s settings.xml -Dversion.application=${VERSION}
   rules:
-     - changes:
-          - backend/**/*
+    changes:
+      - backend/**/*
 
 spotbugs-sast:
   stage: test
   rules:
-    - changes:
+    changes:
       - backend/**/*
   variables:
     COMPILE: "false"
@@ -67,8 +68,8 @@ sonarqube-backend-sast:
   variables:
     GIT_DEPTH: "0"
   rules:
-      - changes:
-        - backend/**/*
+    changes:
+      - backend/**/*
   script:
     - mvn -f ${CI_PROJECT_DIR}/backend -X verify sonar:sonar -Dsonar.projectName="22_ДаниилПайдютов_БЭКЕНД" -Dsonar.projectKey=$SONAR_PROJECT_KEY_BACK -Dsonar.host.url=$SONARQUBE_URL -Dsonar.login=$SONAR_LOGIN  -Dsonar.qualitygate.wait=true
 
