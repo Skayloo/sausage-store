@@ -7,6 +7,7 @@ stages:
   - build
   - test
   - notify
+  - release
   - deploy
 
 backend-module-pipeline:

@@ -1,7 +1,5 @@
 include:
   - template: Security/SAST.gitlab-ci.yml
-stages:
-  - release
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
   JAVA_OPTS: -XX:MaxRAMPercentage=90
@@ -43,7 +41,7 @@ backend-build:
       - backend/**/*
 
 backend-upload-release:
-  stage: release
+  stage: release 
   script:
     - cd backend
     - >

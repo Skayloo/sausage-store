@@ -22,7 +22,7 @@ build-frontend-code-job:
       - frontend/dist/frontend/*
 
 upload-frontend-release:
-  stage: release
+  stage: release 
   script:
     - tar czvf sausage-store-${VERSION}.tar.gz frontend
     - >
