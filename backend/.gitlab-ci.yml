@@ -40,7 +40,7 @@ build-backend-code-job:
     - changes:
       - backend/**/*
 
-upload-backend-release:
+backend-upload-release:
   stage: release
   script:
     - cd backend
