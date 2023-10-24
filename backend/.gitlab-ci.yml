@@ -1,12 +1,21 @@
 include:
   - template: Security/SAST.gitlab-ci.yml
+
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
   JAVA_OPTS: -XX:MaxRAMPercentage=90
   VERSION: 1.0.${CI_PIPELINE_ID}
+
 cache:
   paths:
     - ${CI_PROJECT_DIR}/.m2/repository
+
+stages:
+  - build
+  - test
+  - notify
+  - release
+  - deploy
 
 backend-deploy:
   stage: deploy

@@ -1,9 +1,15 @@
 include:
   - template: Security/SAST.gitlab-ci.yml
-stages:
-  - release
+
 variables:
   VERSION: 1.0.${CI_PIPELINE_ID}
+
+stages:
+  - build
+  - test
+  - notify
+  - release
+
 cache:
   paths:
     - frontend/dist/frontend
