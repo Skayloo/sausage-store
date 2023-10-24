@@ -22,16 +22,18 @@ build-frontend-code-job:
       - frontend/dist/frontend/*
 
 upload-frontend-release:
-  stage: release 
+  stage: release
+  only:
+    changes:
+    - frontend/**/*
+  needs:
+    - build-frontend-code-job
   script:
     - tar czvf sausage-store-${VERSION}.tar.gz frontend
     - >
      curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}"
      --upload-file sausage-store-${VERSION}.tar.gz
      ${NEXUS_REPO_URL_FRONTEND}/${NEXUS_REPO_FRONTEND_NAME}/${VERSION}/sausage-store-${VERSION}.tar.gz
-  only:
-    changes:
-    - frontend/**/*
 
 sonarqube-frontend-sast:
   stage: test
