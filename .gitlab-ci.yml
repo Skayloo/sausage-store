@@ -6,6 +6,7 @@ stages:
   - module-pipelines
   - build
   - test
+  - notify
 
 backend-module-pipeline:
   stage: module-pipelines
