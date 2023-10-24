@@ -6,16 +6,6 @@ cache:
   paths:
     - frontend/dist/frontend
 
-frontend:
-  stage: module-pipelines
-  trigger:
-    include:
-      - "/frontend/.gitlab-ci.yml"
-    strategy: depend # depend нужен, если какой-нибудь дочерний пайплайн свалился, мы знали, что общий пайплайн тоже идёт с ошибкой
-  only:
-    changes: # как только происходит изменение в папке frontend, запускается дочерний пайплайн, который лежит в этой папке
-      - frontend/**/*
-
 build-frontend-code-job:
   stage: build
   script:
@@ -28,6 +18,7 @@ build-frontend-code-job:
   artifacts:
     paths:
       - frontend/dist/frontend/*
+
 upload-frontend-release:
   stage: release
   script:
@@ -39,6 +30,7 @@ upload-frontend-release:
   only:
     changes:
     - frontend/**/*
+
 sonarqube-frontend-sast:
   stage: test
   image: sonarsource/sonar-scanner-cli:latest
