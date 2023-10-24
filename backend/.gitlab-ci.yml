@@ -1,3 +1,10 @@
+stages:
+  - build
+  - test
+  - notify
+  - release
+  - deploy
+  
 include:
   - template: Security/SAST.gitlab-ci.yml
 
@@ -9,13 +16,6 @@ variables:
 cache:
   paths:
     - ${CI_PROJECT_DIR}/.m2/repository
-
-stages:
-  - build
-  - test
-  - notify
-  - release
-  - deploy
 
 backend-deploy:
   stage: deploy
