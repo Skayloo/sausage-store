@@ -15,6 +15,5 @@ ExecStart=/usr/bin/java \
 -Dmyserver.hostName='Sausage-store' \
 -jar '/home/jarservice/sausage-store.jar'
 SuccessExitStatus=143
-
 [Install]
 WantedBy=multi-user.target
