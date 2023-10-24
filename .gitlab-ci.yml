@@ -3,7 +3,6 @@ include:
 - '/frontend/.gitlab-ci.yml'
 
 stages:
-  - module-pipelines
   - build
   - test
   - release
@@ -11,7 +10,6 @@ stages:
   - deploy
 
 backend-module-pipeline:
-  stage: module-pipelines
   trigger:
     include:
       - local: /backend/.gitlab-ci.yml
@@ -21,7 +19,6 @@ backend-module-pipeline:
       - backend/**/*
 
 frontend-module-pipeline:
-  stage: module-pipelines
   trigger:
     include:
       - local: /frontend/.gitlab-ci.yml
