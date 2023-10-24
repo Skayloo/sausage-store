@@ -4,6 +4,7 @@ include:
 
 stages:
   - module-pipelines
+  - test
 
 backend-module-pipeline:
   stage: module-pipelines
