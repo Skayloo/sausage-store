@@ -1,8 +1,3 @@
-stages:
-  - build
-  - notify
-  - release
-
 include:
   - template: Security/SAST.gitlab-ci.yml
 

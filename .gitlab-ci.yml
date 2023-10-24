@@ -4,7 +4,11 @@ include:
 
 stages:
   - module-pipelines
+  - build
   - test
+  - notify
+  - release
+  - deploy
 
 backend-module-pipeline:
   stage: module-pipelines
