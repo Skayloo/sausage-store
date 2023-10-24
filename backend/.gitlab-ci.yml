@@ -1,12 +1,12 @@
-include:
-  - template: Security/SAST.gitlab-ci.yml
-  
 stages:
   - build
   - test
   - notify
   - release
   - deploy
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
