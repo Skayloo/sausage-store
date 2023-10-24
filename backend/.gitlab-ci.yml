@@ -66,7 +66,7 @@ backend-upload-release:
     changes:
       - backend/**/*
   needs:
-    - build-frontend-code-job
+    - build-backend-code-job
   script:
     - cd backend
     - >
