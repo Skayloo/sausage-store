@@ -1,12 +1,13 @@
 include:
 - '/backend/.gitlab-ci.yml'
 - '/frontend/.gitlab-ci.yml'
+
 stages:
   - module-pipelines
   - build
   - test
-  - notify
   - release
+  - notify
   - deploy
 
 backend-module-pipeline:
