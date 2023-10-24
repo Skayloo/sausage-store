@@ -6,7 +6,6 @@ stages:
   - module-pipelines
   - build
   - test
-  - release
   - notify
   - deploy
 
