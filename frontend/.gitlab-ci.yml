@@ -21,18 +21,12 @@ build-frontend-code-job:
     - cd frontend
     - npm install
     - npm run build
-  only:
-    changes:
-    - frontend/**/*
   artifacts:
     paths:
       - frontend/dist/frontend/*
 
 upload-frontend-release:
   stage: release
-  only:
-    changes:
-    - frontend/**/*
   needs:
     - build-frontend-code-job
   script:
@@ -47,22 +41,17 @@ sonarqube-frontend-sast:
   image: sonarsource/sonar-scanner-cli:latest
   variables:
     GIT_DEPTH: "0"
-  rules:
-    - changes:
-      - frontend/**/*
   script:
     - sonar-scanner -Dsonar.projectName="22_ДаниилПайдютов_ФРОНТЕНД" -Dsonar.sources=./frontend -Dsonar.projectKey=$SONAR_PROJECT_KEY_FRONT -Dsonar.host.url=$SONARQUBE_URL -Dsonar.login=$SONAR_LOGIN -Dsonar.qualitygate.wait=true
 
 telegram-notification-frontend:
   stage: notify
   only:
-    changes:
-    - frontend/**/*
     variables:
     - $CI_COMMIT_MESSAGE =~ /send notification/
   script:
     - |
-     curl -X POST -H 'Content-Type: application/json' -d '{"chat_id": "-1001771539978", "text": "Frontend project build for std-022-039. Checkout -> ", "parse_mode": "markdown", "reply_markup": {"inline_keyboard": [[{"text": "@GrantRusov", "url": "'"$CI_PROJECT_URL/-/jobs/artifacts/$CI_COMMIT_SHA/download?job=build-frontend-code-job"'"}]]}}' https://api.telegram.org/bot5933756043:AAE8JLL5KIzgrNBeTP5e-1bkbJy4YRoeGjs/sendMessage
+     curl -X POST -H 'Content-Type: application/json' -d '{"chat_id": "-1001771539978", "text": "Frontend project build for std-022-039. Checkout -> ", "parse_mode": "markdown", "reply_markup": {"inline_keyboard": [[{"text": "@GrantRusov", "url": "'"$CI_PROJECT_URL/-/jobs/artifacts/$CI_COMMIT_SHA/download?job=build-frontend-code-job"'"}]]}}' $TELEGRAM_NOTIFY_API
   needs:
       - build-frontend-code-job
 
