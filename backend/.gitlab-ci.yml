@@ -6,6 +6,9 @@ variables:
   JAVA_OPTS: -XX:MaxRAMPercentage=90
   VERSION: 1.0.${CI_PIPELINE_ID}
 
+
+SPRING_FLYWAY_ENABLED=false
+
 stages:
   - build
   - test
