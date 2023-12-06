@@ -25,6 +25,7 @@ build-backend-code-job:
      mvn package 
      -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/repository
      -Dversion.application=${VERSION}
+     -Dspring.flyway.enabled=false
   artifacts:
     paths:
       - backend/target/sausage-store-${VERSION}.jar
