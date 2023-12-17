@@ -8,6 +8,7 @@ WorkingDirectory=/var/sausage-store/
 Environment=REPORT_PATH=/var/sausage-store/reports
 Environment=LOG_PATH=/var/sausage-store/logs
 Restart=always
+
 ExecStart=/usr/bin/java \
 -Dmyserver.basePath='/home/jarservice/' \
 -Dmyserver.bindAddr='127.0.0.1' \

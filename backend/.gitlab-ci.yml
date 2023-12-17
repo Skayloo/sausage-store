@@ -5,7 +5,7 @@ variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
   JAVA_OPTS: -XX:MaxRAMPercentage=90
   VERSION: 1.0.${CI_PIPELINE_ID}
-
+  
 stages:
   - build
   - test
@@ -25,6 +25,7 @@ build-backend-code-job:
      mvn package 
      -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/repository
      -Dversion.application=${VERSION}
+     -Dspring.flyway.enabled=false
   artifacts:
     paths:
       - backend/target/sausage-store-${VERSION}.jar
