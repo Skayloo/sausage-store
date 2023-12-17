@@ -28,7 +28,7 @@ build-backend-code-job:
      -Dversion.application=${VERSION}
      -Dspring.flyway.enabled=false
      -Djavax.net.ssl.trustStore=/home/student/YATrustStore
-     -Djavax.net.ssl.trustStorePassword=superpass" 
+     -Djavax.net.ssl.trustStorePassword=superpass
   artifacts:
     paths:
       - backend/target/sausage-store-${VERSION}.jar
