@@ -26,6 +26,9 @@ build-backend-code-job:
      -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/repository
      -Dversion.application=${VERSION}
      -Dspring.flyway.enabled=false
+     -Djavax.net.ssl.trustStore=/home/student/YATrustStore
+     -Djavax.net.ssl.trustStorePassword=superpass
+
   artifacts:
     paths:
       - backend/target/sausage-store-${VERSION}.jar
