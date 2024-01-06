@@ -1,11 +1,6 @@
 #! /bin/bash
 set -xe
-sudo cp -rf sausage-store-frontend.service /etc/systemd/system/sausage-store-frontend.service
-sudo rm -r /opt/sausage-store/static/sausage-store/frontend || true
-curl -u ${NEXUS_REPO_USER}:${NEXUS_REPO_PASS} -o sausage-store.tar.gz ${NEXUS_REPO_URL_FRONTEND}sausage-store-Paidyutov-Daniil-frontend/${VERSION}/sausage-store-${VERSION}.tar.gz
-sudo tar -zxf sausage-store.tar.gz --directory /opt/sausage-store/static/sausage-store/ || true
-#Это я на всякий случай (понятия не имею какие права выдает разархивирование)
-sudo chmod 755 /opt/sausage-store/static/sausage-store/frontend || true
-sudo systemctl daemon-reload
-#Перезапускаем сервис сосисочной
-sudo systemctl restart sausage-store-frontend --now
+sudo docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
+sudo docker network create -d bridge sausage_network || true
+sudo docker rm -f sausage-frontend || true
+sudo docker run --restart=on-failure:10 -p 8080:80 -d --name sausage-frontend --network=sausage_network "${CI_REGISTRY_IMAGE}"/sausage-frontend:"${VERSION}"
