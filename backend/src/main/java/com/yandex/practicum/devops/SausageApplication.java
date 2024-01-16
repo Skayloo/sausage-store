@@ -25,7 +25,6 @@ public class SausageApplication {
             productService.save(new Product(4L, "Нюренбергская", 315.00, "https://storage.yandexcloud.net/minio-std-022-039/3.jpg"));
             productService.save(new Product(5L, "Мюнхенская", 330.00, "https://storage.yandexcloud.net/minio-std-022-039/2.jpg"));
             productService.save(new Product(6L, "Еврейская", 189.00, "https://storage.yandexcloud.net/minio-std-022-039/1.jpg"));
-            productService.save(new Product(7L, "Американская", 189.00, "https://storage.yandexcloud.net/minio-std-022-039/1.jpg"));
         };
     }
 }
