@@ -27,9 +27,9 @@ build-backend-code-job:
   script:
     - echo "test"
     - /kaniko/executor
-      --context "${CI_PROJECT_DIR}/backend"
-      --dockerfile "${CI_PROJECT_DIR}/backend/Dockerfile"
-      --destination "${CI_REGISTRY_IMAGE}/sausage-backend:$CI_COMMIT_SHA"
+      --context "${CI_PROJECT_DIR}/backend-report"
+      --dockerfile "${CI_PROJECT_DIR}/backend-report/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}/backend-report:$CI_COMMIT_SHA"
       --build-arg VERSION=$VERSION
       --cache=true
 
@@ -44,7 +44,7 @@ release:
   before_script:
     - crane auth login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - crane tag $CI_REGISTRY_IMAGE/sausage-backend:$CI_COMMIT_SHA $VERSION
+    - crane tag $CI_REGISTRY_IMAGE/backend-report:$CI_COMMIT_SHA $VERSION
 
 spotbugs-sast:
   stage: test
@@ -90,7 +90,7 @@ deploy:
       export SPRING_DATASOURCE_URL=${PSQL_DATASOURCE}
       export SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
       export SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
-      export DATA_MONGODB_URI=${DATA_MONGODB_URI}
+      export DATA_MONGODB_URI=${MONGO_DATA}
       export IMAGE_BACKEND=${IMAGE_BACKEND}:${VERSION}
       export CI_REGISTRY_USER=${CI_REGISTRY_USER}
       export CI_REGISTRY_PASSWORD=${CI_REGISTRY_PASSWORD}
