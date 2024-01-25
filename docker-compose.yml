@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   backend:
-    image: gitlab.praktikum-services.ru:5050/std-022-039/sausage-store/sausage-backend:${VERSION}
+    image: gitlab.praktikum-services.ru:5050/std-022-039/sausage-store/backend:${VERSION}
     container_name: sausage-store-backend
     environment:
       # Переменные из application.properties можно заменить переменными окружения
@@ -26,7 +26,7 @@ services:
       - sausage-store
 
   frontend:
-    image: gitlab.praktikum-services.ru:5050/std-022-039/sausage-store/sausage-frontend:${VERSION}
+    image: gitlab.praktikum-services.ru:5050/std-022-039/sausage-store/frontend:${VERSION}
     container_name: sausage-store-frontend
     ports:
       - "80:80"
