@@ -19,7 +19,6 @@ cache:
   paths:
     - ${CI_PROJECT_DIR}/.m2/repository
 
-
 build-backend-code-job:
   stage: build
   image:
