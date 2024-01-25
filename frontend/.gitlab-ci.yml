@@ -44,7 +44,6 @@ upload-frontend-release:
   script:
     - crane tag $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA $VERSION
 
-
 sonarqube-frontend-sast:
   stage: test
   image: sonarsource/sonar-scanner-cli:latest
