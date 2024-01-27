@@ -1,4 +1,6 @@
 include:
+  - project: "templates/ci"
+    file: "DockerInDockerTemplate.yml"
   - template: Security/SAST.gitlab-ci.yml
 
 variables:
@@ -25,7 +27,7 @@ build-frontend-code-job:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}/frontend"
       --dockerfile "${CI_PROJECT_DIR}/frontend/Dockerfile"
-      --destination "${CI_REGISTRY_IMAGE}/sausage-frontend:$CI_COMMIT_SHA"
+      --destination "${CI_REGISTRY_IMAGE}/frontend:$CI_COMMIT_SHA"
       --build-arg VERSION=$VERSION
       --cache=true
 
@@ -40,8 +42,7 @@ upload-frontend-release:
   before_script:
     - crane auth login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - crane tag $CI_REGISTRY_IMAGE/sausage-frontend:$CI_COMMIT_SHA $VERSION
-
+    - crane tag $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA $VERSION
 
 sonarqube-frontend-sast:
   stage: test
@@ -66,7 +67,7 @@ frontend-deploy:
   stage: deploy
   image: alpine:3.18
   before_script:
-    - apk add openssh-client bash gettext
+    - apk add openssh-client bash docker docker-compose
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
@@ -74,7 +75,12 @@ frontend-deploy:
     - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - ssh ${DEV_USER}@${DEV_HOST} "mkdir -p /tmp/${CI_PROJECT_DIR}/frontend/"
-    - scp ./frontend/default.conf ${DEV_USER}@${DEV_HOST}:/tmp/${CI_PROJECT_DIR}/frontend/default.conf
-    - ssh ${DEV_USER}@${DEV_HOST} "$(envsubst < ./frontend/deploy.sh)"
-
+    - docker context create remote --docker "host=ssh://$DEV_USER@$DEV_HOST"
+    - docker context use remote
+    - >
+      export IMAGE_FRONTEND=${IMAGE_FRONTEND}:${VERSION}
+      export CI_REGISTRY_USER=${CI_REGISTRY_USER}
+      export CI_REGISTRY_PASSWORD=${CI_REGISTRY_PASSWORD}
+      export CI_REGISTRY=${CI_REGISTRY}
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker-compose --context remote up -d frontend

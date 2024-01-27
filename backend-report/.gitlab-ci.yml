@@ -7,7 +7,7 @@ variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
   JAVA_OPTS: -XX:MaxRAMPercentage=90
   VERSION: 1.0.${CI_PIPELINE_ID}
-  
+
 stages:
   - build
   - test
@@ -27,9 +27,9 @@ build-backend-code-job:
   script:
     - echo "test"
     - /kaniko/executor
-      --context "${CI_PROJECT_DIR}/backend"
-      --dockerfile "${CI_PROJECT_DIR}/backend/Dockerfile"
-      --destination "${CI_REGISTRY_IMAGE}/backend:$CI_COMMIT_SHA"
+      --context "${CI_PROJECT_DIR}/backend-report"
+      --dockerfile "${CI_PROJECT_DIR}/backend-report/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}/backend-report:$CI_COMMIT_SHA"
       --build-arg VERSION=$VERSION
       --cache=true
 
@@ -44,7 +44,7 @@ release:
   before_script:
     - crane auth login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - crane tag $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHA $VERSION
+    - crane tag $CI_REGISTRY_IMAGE/backend-report:$CI_COMMIT_SHA $VERSION
 
 spotbugs-sast:
   stage: test
@@ -76,7 +76,7 @@ deploy:
   stage: deploy
   image: alpine:3.18
   before_script:
-    - apk add openssh-client bash docker docker-compose
+    - apk add openssh-client bash docker-compose
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
@@ -97,4 +97,4 @@ deploy:
       export CI_REGISTRY=${CI_REGISTRY}
       export SPRING_FLYWAY_ENABLED=false
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker-compose --context remote up -d backend
+    - docker-compose --context remote up -d backend-report
