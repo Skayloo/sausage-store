@@ -8,7 +8,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       SPRING_DATASOURCE_URL: ${PSQL_DATASOURCE}
       SPRING_FLYWAY_BASELINE-ON-MIGRATE: "true"
-      SPRING_DATA_MONGODB_URI: ${DATA_MONGODB_URI}
+      SPRING_DATA_MONGODB_URI: ${MONGO_DATA}
       VIRTUAL_HOST: sausage-store
     networks:
       - sausage-store
@@ -22,7 +22,7 @@ services:
       dockerfile: Dockerfile
     environment:
       PORT: 8080
-      DB: ${DATA_MONGODB_URI}
+      DB: ${MONGO_DATA}
     networks:
       - sausage-store
 

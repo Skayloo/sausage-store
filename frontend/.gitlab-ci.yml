@@ -31,7 +31,7 @@ build-frontend-code-job:
       --build-arg VERSION=$VERSION
       --tag $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA
       .
-- docker push $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA
 
 upload-frontend-release:
  variables:
