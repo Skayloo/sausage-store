@@ -43,6 +43,7 @@ services:
   frontend:
     image: gitlab.praktikum-services.ru:5050/std-022-039/sausage-store/frontend:${VERSION}
     container_name: sausage-store-frontend
+    restart: always
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     environment:
