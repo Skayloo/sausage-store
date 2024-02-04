@@ -97,4 +97,27 @@ deploy:
       export CI_REGISTRY=${CI_REGISTRY}
       export SPRING_FLYWAY_ENABLED=false
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker-compose --context remote up -d backend
+    - blue=$(docker --context remote container inspect  --format "{{json .State.Health }}" blue-backend | jq -r '.Status') || true
+    - green=$(docker --context remote container inspect  --format "{{json .State.Health }}" green-backend | jq -r '.Status') || true
+    - echo $blue
+    - echo $green
+    - >
+      if [ $blue == 'healthy' ]; then
+          docker-compose --context remote pull green-backend
+          docker-compose --context remote up -d --force-recreate green-backend
+          while [$(docker --context inspect --format "{{json .State.Health }}" green-backend | jq -r '.Status') != 'healthy']
+          do
+              sleep 5
+          done
+          docker-compose --context remote stop blue-backend
+          echo "Deploy succesfully"
+      else
+          docker-compose --context remote pull blue-backend
+          docker-compose --context remote up -d --force-recreate blue-backend
+          while [ $(docker --context remote container inspect  --format "{{json .State.Health }}" blue-backend | jq -r '.Status') != 'healthy' ]
+          do
+              sleep 5
+          done
+          docker-compose --context remote stop green-backend
+          echo "Deploy succesfully"
+      fi
