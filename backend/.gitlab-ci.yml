@@ -105,7 +105,7 @@ deploy:
       if [ $blue == 'healthy' ]; then
           docker-compose --context remote pull green-backend
           docker-compose --context remote up -d --force-recreate green-backend
-          while [ $(docker --context remote container inspect --format "{{json .State.Health }}" green-backend | jq -r '.Status') != 'healthy']
+          while [ $(docker --context remote container inspect --format "{{json .State.Health }}" green-backend | jq -r '.Status') != 'healthy' ]
           do
               sleep 5
           done
