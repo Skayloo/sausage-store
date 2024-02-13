@@ -21,10 +21,11 @@ spec:
     spec:
       containers:
         - name: sausage-store-backend-report
+          image: gitlab.praktikum-services.ru:5050/std-022-039/sausage-store/sausage-backend-report:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: VAULT_HOST
-              value: http://std-022-39.praktikum-services.tech
+              value: 130.193.38.73
             - name: VAULT_TOKEN
               valueFrom:
                 secretKeyRef:
