@@ -13,7 +13,7 @@ deploy:
     url: http://std-022-39.praktikum-services.tech
   before_script:
     - rm -rf ~/.kube
-    - mdkir -p ~/.kube
+    - mkdir -p ~/.kube
     - chmod 777 ~/.kube
   script:
     - kubectl apply -f kubernetes/frontend/ --recursive
