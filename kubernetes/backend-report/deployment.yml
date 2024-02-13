@@ -32,7 +32,7 @@ spec:
           #         name: vault
           #         key: vault_token
           ports:
-            - name: sausage-store-backend-report
+            - name: backend-report
               containerPort: 8081
           livenessProbe:
             httpGet:
