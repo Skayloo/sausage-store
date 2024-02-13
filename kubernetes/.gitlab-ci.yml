@@ -15,7 +15,8 @@ deploy:
   before_script:
     - mkdir -p ~/.kube
     - chmod 700 ~/.kube
-    - echo "$KUBECONFIG" >> ~/.kube/config
+    - rm ~/.kube/config
+    - scp ./kubernetes/config ${DEV_USER}@${DEV_HOST}:~/.kube
     - chmod 644 ~/.kube/config
   script:
     - kubectl apply -f kubernetes/frontend/ --recursive
