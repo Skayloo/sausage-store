@@ -21,8 +21,9 @@ deploy:
     - chmod 644 ~/.ssh/known_hosts
     - mkdir -p ~/.kube
     - chmod 700 ~/.kube
-    - rm ~/.kube/config || true
-    - cp ./kubernetes/config ~/.kube
+    # - rm ~/.kube/config || true
+    # - cp ./kubernetes/config ~/.kube
+    - cat "$kubeconfig" > ~/.kube/config
     - chmod 644 ~/.kube/config
   script:
     - kubectl apply -f kubernetes/frontend/ --recursive
