@@ -10,7 +10,7 @@ deploy:
   image: alpine/k8s:1.22.6
   environment:
     name: k8s
-    url: http://std-022-39.praktikum-services.tech
+    url: http://std-022-039.praktikum-services.tech
   before_script:
     - rm -rf ~/.kube || true
     - mkdir -p ~/.kube || true
