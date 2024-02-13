@@ -11,12 +11,8 @@ deploy:
   environment:
     name: k8s
     url: http://std-022-39.praktikum-services.tech
-  before_script:
-    - rm -rf ~/.kube
-    - mkdir -p ~/.kube
-    - chmod 777 ~/.kube
   script:
-    - kubectl apply -f kubernetes/frontend/ --recursive
-    - kubectl apply -f kubernetes/backend/ --recursive
-    - kubectl apply -f kubernetes/backend-report/ --recursive
+    - kubectl apply -f kubernetes/frontend --kubeconfig ~/.kube/config
+    - kubectl apply -f kubernetes/backend --kubeconfig ~/.kube/config
+    - kubectl apply -f kubernetes/backend-report --kubeconfig ~/.kube/config
     - rm ~/.kube/config
