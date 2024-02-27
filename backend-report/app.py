@@ -7,7 +7,7 @@ from flask import Flask
 
 app = Flask(__name__)
 
-DB = os.environ.get('DB') if os.environ.get('DB') else "mongodb://std-022-039:Testusr1234@rc1a-sui0a7vifhdsk9b1.mdb.yandexcloud.net:27018/std-022-039?tls=false"
+DB = "mongodb://std-022-039:Testusr1234@rc1a-sui0a7vifhdsk9b1.mdb.yandexcloud.net:27018/std-022-039?tls=true&tlsAllowInvalidCertificates=true"
 client = pymongo.MongoClient(DB)
 parsedUri = pymongo.uri_parser.parse_uri(DB)
 db = client[parsedUri['database']]
@@ -30,4 +30,4 @@ if __name__ == "__main__":
     sched.add_job(load_report, 'interval', minutes=5)
     sched.start()
     load_report()
-    app.run(host='0.0.0.0', debug=True, port=os.environ.get('PORT'), use_reloader=False)
+    app.run(host='0.0.0.0', debug=True, port=os.environ.get('8080'), use_reloader=False)
