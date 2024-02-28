@@ -31,12 +31,12 @@ backend-report:
     changes:
       - backend-report/**/*
 
-deploy:     
-  stage: module-pipelines  
-  trigger:
-    include:
-      - "/kubernetes/.gitlab-ci.yml"
-    strategy: depend 
-  only:
-    changes: 
-      - kubernetes/**/* 
+# deploy:     
+#   stage: module-pipelines  
+#   trigger:
+#     include:
+#       - "/kubernetes/.gitlab-ci.yml"
+#     strategy: depend 
+#   only:
+#     changes: 
+#       - kubernetes/**/* 
